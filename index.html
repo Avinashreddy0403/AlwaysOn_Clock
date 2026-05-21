@@ -1,47 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="img/logo.webp" type="image/x-icon">
-  <title>AlwaysOn Clock</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="shortcut icon" href="img/logo.webp" type="image/x-icon">
+<title>AlwaysOn Clock</title>
+<link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Navbar -->
-  <div id="navbar">
-    <div id="nav-left">
-      <img src="img/logo.webp" alt="Logo" id="logo">
-    </div>
-    <div id="nav-right">
-      <div class="toggle-row">
-        <label class="switch">
-          <input type="checkbox" id="wakeSwitch">
-          <span class="slider round"></span>
-        </label>
-        <span id="wakeLabel">Keep Awake OFF</span>
-      </div>
 
-      <div class="toggle-row">
-        <label class="switch">
-          <input type="checkbox" id="formatSwitch">
-          <span class="slider round"></span>
-        </label>
-        <span id="formatLabel">24-hour</span>
-      </div>
+<body class="green">
 
-      <button id="fsBtn" title="Toggle Fullscreen">⛶</button>
-    </div>
-  </div>
+<!-- Navbar -->
+<div id="navbar">
 
-  <!-- Clock Box -->
-  <div id="container">
-    <div id="clockBox">
-      <div id="clock">00:00:00</div>
-    </div>
-    <div id="date"></div>
-  </div>
+<div id="nav-left">
+<img src="img/logo.webp" alt="Logo" id="logo">
+</div>
 
-  <script src="script.js"></script>
+<div id="nav-right">
+
+<div class="toggle-row">
+<label class="switch">
+<input type="checkbox" id="wakeSwitch">
+<span class="slider round"></span>
+</label>
+<span id="wakeLabel">Keep Awake OFF</span>
+</div>
+
+<div class="toggle-row">
+<label class="switch">
+<input type="checkbox" id="formatSwitch">
+<span class="slider round"></span>
+</label>
+<span id="formatLabel">24-hour</span>
+</div>
+
+<button id="modeBtn">🌙</button>
+
+<select id="themeSelect">
+<option value="green">Green</option>
+<option value="blue">Blue</option>
+<option value="red">Red</option>
+<option value="purple">Purple</option>
+<option value="orange">Orange</option>
+<option value="pink">Pink</option>
+<option value="cyan">Cyan</option>
+</select>
+
+<button id="fsBtn" title="Toggle Fullscreen">⛶</button>
+
+</div>
+</div>
+
+<!-- Clock -->
+<div id="container">
+
+<div id="clockBox">
+<div id="clock">00:00:00</div>
+</div>
+
+<div id="date"></div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
