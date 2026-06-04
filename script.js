@@ -4,33 +4,33 @@ let hideTimeout;
 
 /* CLOCK */
 
-function updateClock(){
+function updateClock() {
 
-let now=new Date();
+let now = new Date();
 
-let hours=now.getHours();
-let minutes=String(now.getMinutes()).padStart(2,'0');
-let seconds=String(now.getSeconds()).padStart(2,'0');
-let ampm="";
+let hours = now.getHours();
+let minutes = String(now.getMinutes()).padStart(2,'0');
+let seconds = String(now.getSeconds()).padStart(2,'0');
+let ampm = "";
 
 if(!is24Hour){
 
-ampm=hours>=12?" PM":" AM";
-hours=hours%12;
-hours=hours?hours:12;
+ampm = hours >= 12 ? " PM" : " AM";
+hours = hours % 12;
+hours = hours ? hours : 12;
 
 }
 
-hours=String(hours).padStart(2,'0');
+hours = String(hours).padStart(2,'0');
 
-document.getElementById("clock").textContent=
+document.getElementById("clock").textContent =
 `${hours}:${minutes}:${seconds}${ampm}`;
 
-const days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+const days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
-const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
-document.getElementById("date").textContent=
+document.getElementById("date").textContent =
 `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
 
 }
@@ -39,10 +39,10 @@ document.getElementById("date").textContent=
 
 document.getElementById("formatSwitch").addEventListener("change",(e)=>{
 
-is24Hour=!e.target.checked;
+is24Hour = !e.target.checked;
 
-document.getElementById("formatLabel").textContent=
-is24Hour?"24-hour":"12-hour";
+document.getElementById("formatLabel").textContent =
+is24Hour ? "24-hour" : "12-hour";
 
 updateClock();
 
@@ -55,12 +55,12 @@ document.getElementById("fsBtn").addEventListener("click",()=>{
 if(!document.fullscreenElement){
 
 document.documentElement.requestFullscreen();
-document.getElementById("fsBtn").textContent="❎";
+document.getElementById("fsBtn").textContent = "❎";
 
 }else{
 
 document.exitFullscreen();
-document.getElementById("fsBtn").textContent="⛶";
+document.getElementById("fsBtn").textContent = "⛶";
 
 }
 
@@ -70,7 +70,7 @@ document.addEventListener("fullscreenchange",()=>{
 
 if(!document.fullscreenElement){
 
-document.getElementById("fsBtn").textContent="⛶";
+document.getElementById("fsBtn").textContent = "⛶";
 
 }
 
@@ -78,18 +78,33 @@ document.getElementById("fsBtn").textContent="⛶";
 
 /* WAKE LOCK */
 
-document.getElementById("wakeSwitch").addEventListener("change",async(e)=>{
+document.getElementById("wakeSwitch").addEventListener("change", async (e) => {
 
 if(e.target.checked){
 
 try{
 
-wakeLock=await navigator.wakeLock.request("screen");
-document.getElementById("wakeLabel").textContent="Keep Awake ON";
+wakeLock = await navigator.wakeLock.request("screen");
+
+document.getElementById("wakeLabel").textContent = "Keep Awake ON";
+
+wakeLock.addEventListener("release", () => {
+
+wakeLock = null;
+
+document.getElementById("wakeSwitch").checked = false;
+
+document.getElementById("wakeLabel").textContent = "Keep Awake OFF";
+
+});
 
 }catch{
 
 alert("Wake Lock not supported");
+
+e.target.checked = false;
+
+document.getElementById("wakeLabel").textContent = "Keep Awake OFF";
 
 }
 
@@ -97,12 +112,38 @@ alert("Wake Lock not supported");
 
 if(wakeLock){
 
-wakeLock.release();
-wakeLock=null;
+await wakeLock.release();
+wakeLock = null;
 
 }
 
-document.getElementById("wakeLabel").textContent="Keep Awake OFF";
+document.getElementById("wakeLabel").textContent = "Keep Awake OFF";
+
+}
+
+});
+
+/* RE-REQUEST WHEN TAB BECOMES ACTIVE */
+
+document.addEventListener("visibilitychange", async () => {
+
+const wakeSwitch = document.getElementById("wakeSwitch");
+
+if(
+wakeSwitch.checked &&
+document.visibilityState === "visible" &&
+!wakeLock
+){
+
+try{
+
+wakeLock = await navigator.wakeLock.request("screen");
+
+}catch(err){
+
+console.error(err);
+
+}
 
 }
 
@@ -113,14 +154,14 @@ document.getElementById("wakeLabel").textContent="Keep Awake OFF";
 function showUI(){
 
 document.getElementById("navbar").classList.remove("hidden");
-document.body.style.cursor="default";
+document.body.style.cursor = "default";
 
 clearTimeout(hideTimeout);
 
-hideTimeout=setTimeout(()=>{
+hideTimeout = setTimeout(()=>{
 
 document.getElementById("navbar").classList.add("hidden");
-document.body.style.cursor="none";
+document.body.style.cursor = "none";
 
 },3000);
 
@@ -132,20 +173,20 @@ showUI();
 
 /* LIGHT MODE */
 
-const modeBtn=document.getElementById("modeBtn");
+const modeBtn = document.getElementById("modeBtn");
 
-modeBtn.onclick=()=>{
+modeBtn.onclick = ()=>{
 
 document.body.classList.toggle("light");
 
-modeBtn.textContent=
-document.body.classList.contains("light")?"☀️":"🌙";
+modeBtn.textContent =
+document.body.classList.contains("light") ? "☀️" : "🌙";
 
 };
 
 /* THEMES */
 
-const themeSelect=document.getElementById("themeSelect");
+const themeSelect = document.getElementById("themeSelect");
 
 themeSelect.addEventListener("change",()=>{
 
